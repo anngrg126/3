@@ -15,31 +15,58 @@
     <script>
       var app = angular.module("surveyApp", ["ngRoute"]);
 
-      app.controller("loginController", function($scope, $http){
-        $scope.test = "Hola Senor";
+      app.config(function($routeProvider){
+        $routeProvider
+        .when("/login", {
+          templateUrl: "/partials/login.html"
+        })
+        .when("/dashboard", {
+          templateUrl: "/partials/dashboard.html"
+        })
+        .when("/poll", {
+          templateUrl: "/partials/poll.html"
+        })
+        .when("create", {
+          templateUrl: "/partials/create.html"
+        })
+        // .otherwise({
+        //   redirectTo: "/dashboard"
+        // });
+      });
 
-        $scope.login = function(user){
+      app.factory("surveyFactory", function($http){
+        var factory = { user : null};
+
+
+        factory.login = function(user){
           $http.get("/users/" + user.username).then(function(response){
-            var foundUser = response.data.user;
-            if (foundUser === null){
+            factory.user = response.data.user;
+            if (factory.user === null){
               $http.post("/users", user).then(function(response){
-                alert("Created:" + response.data.user.username);
+                // alert("Created:" + response.data.user.username);
+                factory.user = response.data.user;
               });
             } else {
-              alert("Found existing user:" + response.data.user.username);
+              // alert("Found existing user:" + response.data.user.username);
             }
-
-
           });
-
-
         };
 
+        return factory;
+      });
+
+
+      app.controller("loginController", function($scope, surveyFactory){
+        $scope.login = function(user){
+          surveyFactory.login(user);
+        };
 
       });
 
 
-
+      app.controller("dashboardController", function($scope, surveyFactory){
+        $scope.loggedInUser = surveyFactory.user;
+      });
     </script>
   </head>
 
@@ -51,16 +78,9 @@
       </div>
     </nav>
 
-    <div class="container" ng-controller="loginController">
-      <h1 ng-bind="test"></h1>
+    <div ng-view=""></div>
 
-      <form ng-submit="login(user)">
-        <input class="form-control" type="text" name="username" ng-model=user.username>
-        <input class="btn btn-primary btn-block" type="submit" name="" value="Login">
 
-      </form>
-
-    </div>
 
   </body>
 </html>
