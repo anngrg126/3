@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="surveyApp">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
@@ -9,6 +9,27 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <script type="text/javascript" src="/angular/angular.js"></script>
+    <script type="text/javascript" src="/angular-route/angular-route.js"></script>
+
+    <script>
+      var app = angular.module("surveyApp", ["ngRoute"]);
+
+      app.controller("loginController", function($scope, $http){
+        $scope.test = "Hola Senor";
+
+        $scope.login = function(user){
+          $http.post("/users", user).then(function(response){
+            console.log(response);
+          });
+        };
+
+
+      })
+
+
+
+    </script>
   </head>
 
 
@@ -19,8 +40,15 @@
       </div>
     </nav>
 
-    <div class="container">
-        
+    <div class="container" ng-controller="loginController">
+      <h1 ng-bind="test"></h1>
+
+      <form ng-submit="login(user)">
+        <input class="form-control" type="text" name="username" ng-model=user.username>
+        <input class="btn btn-primary btn-block" type="submit" name="" value="Login">
+
+      </form>
+
     </div>
 
   </body>
