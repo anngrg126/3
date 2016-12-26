@@ -19,13 +19,24 @@
         $scope.test = "Hola Senor";
 
         $scope.login = function(user){
-          $http.post("/users", user).then(function(response){
-            console.log(response);
+          $http.get("/users/" + user.username).then(function(response){
+            var foundUser = response.data.user;
+            if (foundUser === null){
+              $http.post("/users", user).then(function(response){
+                alert("Created:" + response.data.user.username);
+              });
+            } else {
+              alert("Found existing user:" + response.data.user.username);
+            }
+
+
           });
+
+
         };
 
 
-      })
+      });
 
 
 

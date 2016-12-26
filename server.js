@@ -17,6 +17,15 @@ var userSchema = new mongoose.Schema({
 mongoose.model("User", userSchema);
 var User = mongoose.model("User");
 
+app.get("/users/:username", function(req, res){
+  console.log(req.params.username);
+  User.findOne({ username: req.params.username}, function(error, user){
+    console.log(user);
+    res.json({ user: user});
+  });
+
+});
+
 app.post("/users", function(req, res){
   console.log(req.body.username);
 
