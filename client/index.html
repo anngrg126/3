@@ -26,7 +26,7 @@
         .when("/poll", {
           templateUrl: "/partials/poll.html"
         })
-        .when("create", {
+        .when("/create", {
           templateUrl: "/partials/create.html"
         })
         // .otherwise({
@@ -66,6 +66,26 @@
 
       app.controller("dashboardController", function($scope, surveyFactory){
         $scope.loggedInUser = surveyFactory.user;
+      });
+
+      app.controller("createSurveyController", function($scope, surveyFactory, $http){
+        $scope.loggedInUser = surveyFactory.user;
+
+        $scope.createSurvey = function(survey){
+          options = [
+            {text: survey.opt1},
+            {text: survey.opt2},
+            {text: survey.opt3},
+            {text: survey.opt4},
+          ];
+          survey.options = options;
+          survey._user = $scope.loggedInUser._id;
+          console.log(survey);
+
+          $http.post("/surveys", survey).then(function(response){
+            console.log(response);
+          });
+        };
       });
     </script>
   </head>

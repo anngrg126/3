@@ -1,2 +1,12 @@
+<div class="container" ng-controller="createSurveyController">
+<h3>Put the question and options here:</h3>
+  <form ng-submit="createSurvey(survey)">
+      <input class="form-control" type="text" ng-model="survey.question">
+      <input class="form-control" type="text" ng-model="survey.opt1">
+      <input class="form-control" type="text" ng-model="survey.opt2">
+      <input class="form-control" type="text" ng-model="survey.opt3">
+      <input class="form-control" type="text" ng-model="survey.opt4">
+      <input class="btn btn-primary btn-block" type="submit" name="" value="Create Poll">
+  </form>
 
-create 
+</div>
