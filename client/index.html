@@ -64,8 +64,13 @@
       });
 
 
-      app.controller("dashboardController", function($scope, surveyFactory){
+      app.controller("dashboardController", function($scope, surveyFactory, $http){
         $scope.loggedInUser = surveyFactory.user;
+
+        $http.get("/surveys").then(function(response){
+          $scope.surveys = response.data.surveys;
+          console.log($scope.surveys);
+        });
       });
 
       app.controller("createSurveyController", function($scope, surveyFactory, $http){

@@ -26,7 +26,7 @@ var surveySchema = new mongoose.Schema({
   _user: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
   question: { type: String, minlength: 8, required: true},
   options: [optionSchema]
-});
+}, {timestamps: true});
 
 mongoose.model("Survey", surveySchema);
 var Survey = mongoose.model("Survey");
@@ -65,6 +65,13 @@ app.post("/users", function(req, res){
 
 });
 
+app.get("/surveys", function(req, res){
+  Survey.find({}).populate("_user").exec(function (err, surveys){
+    res.json({ surveys: surveys});
+  });
+});
+
+
 app.post("/surveys", function(req, res){
 
   var s = new Survey({
@@ -80,8 +87,6 @@ app.post("/surveys", function(req, res){
     }
     res.json({survey:s});
   })
-
-
 })
 
 

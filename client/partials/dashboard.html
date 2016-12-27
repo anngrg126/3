@@ -1,4 +1,25 @@
 <div ng-controller="dashboardController">
   <h1 ng-bind="loggedInUser.username"></h1>
+  <table class="table table-striped">
+    <caption>Current Polls</caption>
+    <thead>
+      <tr>
+        <td>Name</td>
+        <td>Survey Question</td>
+        <th>Date Posted</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="survey in surveys">
+        <td ng-bind="survey._user.username"></td>
+        <td ng-bind="survey.question"></td>
+        <td ng-bind="survey.createdAt | date: 'MMMM dd yyyy'"></td>
+        <td>TBD</td>
+      </tr>
+    </tbody>
+  </table>
+
+
 
 </div>
