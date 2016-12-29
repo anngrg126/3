@@ -1,2 +1,25 @@
+<div class="container" ng-controller="surveyController">
 
-poll 
+  <h3 ng-bing="survey.question"></h3>
+
+  <h5>Click the VOTE button to choose one.</h5>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Option</th>
+        <th>Vote Count</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="option in survey.options">
+        <td ng-bind="option.text"></td>
+        <td ng-bind="option.votes"></td>
+        <td>TBD</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+</div>

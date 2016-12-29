@@ -35,7 +35,7 @@
       });
 
       app.factory("surveyFactory", function($http){
-        var factory = { user : null};
+        var factory = { user : null, surveys: [] };
 
 
         factory.login = function(user, successfullyLoggedIn){
@@ -51,6 +51,14 @@
               successfullyLoggedIn();
               // alert("Found existing user:" + response.data.user.username);
             }
+          });
+        };
+
+        factory.surveysIndex = function(receivedSurveys) {
+          $http.get("/surveys").then(function(response){
+            factory.surveys = response.data.surveys;
+            receivedSurveys(factory.surveys);
+            // console.log($scope.surveys);
           });
         };
 
@@ -75,10 +83,11 @@
           $location.url("/login");
         }
 
-        $http.get("/surveys").then(function(response){
-          $scope.surveys = response.data.surveys;
-          console.log($scope.surveys);
+        surveyFactory.surveysIndex(function(surveys){
+          $scope.surveys = surveys;
         });
+
+
       });
 
       app.controller("createSurveyController", function($scope, surveyFactory, $http, $location){
@@ -104,6 +113,25 @@
           });
         };
       });
+
+      app.controller("surveyController", function($scope, $routeParams, surveyFactory, $location){
+        $scope.loggedInUser = surveyFactory.user;
+
+        if(!$scope.loggedInUser){
+          $location.url("/login");
+        }
+
+        for (var i = 0; i < surveyFactory.surveys.length; i++){
+          if ($routeParams.id === surveyFactory.surveys[i]._id){
+            $scope.survey = surveyFactory.surveys[i];
+          }
+        }
+
+
+        // console.log($routeParams);
+        // console.log("IN THE SURVEY CONTROLLER -- WOOOHOOOO!!!", surveyFactory.surveys);
+      });
+
     </script>
   </head>
 
