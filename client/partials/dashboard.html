@@ -13,7 +13,7 @@
     <tbody>
       <tr ng-repeat="survey in surveys">
         <td ng-bind="survey._user.username"></td>
-        <td ng-bind="survey.question"></td>
+        <td><a href="/#!/surveys/{{survey._id}}" ng-bind="survey.question"></a></td>
         <td ng-bind="survey.createdAt | date: 'MMMM dd yyyy'"></td>
         <td>TBD</td>
       </tr>

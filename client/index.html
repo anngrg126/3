@@ -23,7 +23,7 @@
         .when("/dashboard", {
           templateUrl: "/partials/dashboard.html"
         })
-        .when("/poll", {
+        .when("/surveys/:id", {
           templateUrl: "/partials/poll.html"
         })
         .when("/create", {
@@ -38,15 +38,17 @@
         var factory = { user : null};
 
 
-        factory.login = function(user){
+        factory.login = function(user, successfullyLoggedIn){
           $http.get("/users/" + user.username).then(function(response){
             factory.user = response.data.user;
             if (factory.user === null){
               $http.post("/users", user).then(function(response){
                 // alert("Created:" + response.data.user.username);
                 factory.user = response.data.user;
+                successfullyLoggedIn();
               });
             } else {
+              successfullyLoggedIn();
               // alert("Found existing user:" + response.data.user.username);
             }
           });
@@ -56,16 +58,22 @@
       });
 
 
-      app.controller("loginController", function($scope, surveyFactory){
+      app.controller("loginController", function($scope, surveyFactory, $location){
         $scope.login = function(user){
-          surveyFactory.login(user);
+          surveyFactory.login(user, function(){
+            $location.url("/dashboard");
+          });
         };
 
       });
 
 
-      app.controller("dashboardController", function($scope, surveyFactory, $http){
+      app.controller("dashboardController", function($scope, surveyFactory, $http, $location){
         $scope.loggedInUser = surveyFactory.user;
+
+        if(!$scope.loggedInUser){
+          $location.url("/login");
+        }
 
         $http.get("/surveys").then(function(response){
           $scope.surveys = response.data.surveys;
@@ -73,8 +81,12 @@
         });
       });
 
-      app.controller("createSurveyController", function($scope, surveyFactory, $http){
+      app.controller("createSurveyController", function($scope, surveyFactory, $http, $location){
         $scope.loggedInUser = surveyFactory.user;
+
+        if(!$scope.loggedInUser){
+          $location.url("/login");
+        }
 
         $scope.createSurvey = function(survey){
           options = [
@@ -102,6 +114,15 @@
           Survey App
       </div>
     </nav>
+<div class="">
+  <ul class="navbar navbar-default">
+    <li><a href="/#!/create">Create a Post</a></li>
+    <li><a href="/#!/dashboard">Dashboard</a></li>
+    <li><a href="/#!/login">Logout</a></li>
+  </ul>
+
+</div>
+
 
     <div ng-view=""></div>
 
