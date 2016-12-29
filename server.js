@@ -89,6 +89,22 @@ app.post("/surveys", function(req, res){
   })
 })
 
+app.put("/votes", function(req, res){
+  Survey.findOne({ _id: req.body.surveyId}, function(err, survey){
+    // console.log(survey.options);
+    // console.log(req.body.optionIndex);
+    survey.options[req.body.optionIndex].votes += 1;
+    survey.save(function (error){
+      if (error){
+        console.log(error);
+        res.json({error: error});
+      }
+      res.json({
+        survey: survey
+      });
+    });
+  });
+});
 
 app.listen(8000, function() {
   console.log("Listening on 8000");

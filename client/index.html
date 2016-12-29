@@ -114,7 +114,7 @@
         };
       });
 
-      app.controller("surveyController", function($scope, $routeParams, surveyFactory, $location){
+      app.controller("surveyController", function($scope, $routeParams, surveyFactory, $location, $http){
         $scope.loggedInUser = surveyFactory.user;
 
         if(!$scope.loggedInUser){
@@ -127,6 +127,13 @@
           }
         }
 
+        $scope.vote = function(index){
+          // alert("Clicked #" + index);
+          $http.put("/votes", { surveyId: $scope.survey._id, optionIndex: index }).then(function(response){
+            $scope.survey = response.data.survey;
+            console.log(response);
+          });
+        };
 
         // console.log($routeParams);
         // console.log("IN THE SURVEY CONTROLLER -- WOOOHOOOO!!!", surveyFactory.surveys);

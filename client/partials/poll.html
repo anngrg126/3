@@ -16,7 +16,7 @@
       <tr ng-repeat="option in survey.options">
         <td ng-bind="option.text"></td>
         <td ng-bind="option.votes"></td>
-        <td>TBD</td>
+        <td><button class="btn btn-default" ng-click="vote($index)">Vote</button></td>
       </tr>
     </tbody>
   </table>
