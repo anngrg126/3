@@ -59,8 +59,9 @@ app.post("/users", function(req, res){
     if(error) {
       console.log(error);
       res.json({ error: error });
+    } else {
+      res.json ({user: user});
     }
-    res.json ({user: user});
   });
 
 });
@@ -84,10 +85,11 @@ app.post("/surveys", function(req, res){
     if(error){
       console.log(error);
       res.json({ error: error });
+    } else {
+      res.json({survey:s});
     }
-    res.json({survey:s});
-  })
-})
+  });
+});
 
 app.put("/votes", function(req, res){
   Survey.findOne({ _id: req.body.surveyId}, function(err, survey){
@@ -98,13 +100,26 @@ app.put("/votes", function(req, res){
       if (error){
         console.log(error);
         res.json({error: error});
+      } else {
+        res.json({
+          survey: survey
+        });
       }
-      res.json({
-        survey: survey
-      });
     });
   });
 });
+
+
+app.delete("/surveys/:id", function(req, res){
+  Survey.remove({ _id: req.params.id }, function(err){
+    if (err){
+      res.json({ error: err });
+    } else {
+      res.json({ removed : true });
+    }
+  });
+});
+
 
 app.listen(8000, function() {
   console.log("Listening on 8000");

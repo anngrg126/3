@@ -1,5 +1,6 @@
 <div ng-controller="dashboardController">
   <h1 ng-bind="loggedInUser.username"></h1>
+  <input class="form-control"type="text" ng-model="searchFilter" placeholder="Search">
   <table class="table table-striped">
     <caption>Current Polls</caption>
     <thead>
@@ -11,11 +12,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="survey in surveys">
+      <tr ng-repeat="survey in surveys | filter: searchFilter">
         <td ng-bind="survey._user.username"></td>
         <td><a href="/#!/surveys/{{survey._id}}" ng-bind="survey.question"></a></td>
         <td ng-bind="survey.createdAt | date: 'MMMM dd yyyy'"></td>
-        <td>TBD</td>
+        <td><button ng-show = "loggedInUser._id === survey._user._id" class="btn btn-danger" ng-click="delete(survey)">Delete</button></td>
       </tr>
     </tbody>
   </table>

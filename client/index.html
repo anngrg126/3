@@ -87,6 +87,15 @@
           $scope.surveys = surveys;
         });
 
+        $scope.delete = function(survey){
+          $http.delete("/surveys/" + survey._id).then(function(response){
+            if(response.data.removed){
+              var index = $scope.surveys.indexOf(survey);
+              $scope.surveys.splice(index, 1);
+            }
+            // console.log(response);
+          });
+        };
 
       });
 
